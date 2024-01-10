@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {ITodo} from "../types/todo";
+import { ITodo } from "../types/todo";
 
 export default function TodoList() {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -30,6 +30,19 @@ export default function TodoList() {
 
     setFilteredTodos(filtered);
   }, [todos, filterStatus, searchTerm]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-200";
+      case "in_progress":
+        return "bg-blue-200";
+      case "done":
+        return "bg-green-200";
+      default:
+        return "bg-gray-200";
+    }
+  };
 
   return (
     <div className="container flex flex-col mx-auto p-4 h-[100svh]">
@@ -91,19 +104,40 @@ export default function TodoList() {
         </div>
       </div>
 
-        {filteredTodos.length === 0 ? (
-          <p className="flex flex-col justify-center items-center basis-full">
-            No todos found. <Link to="/todo/create" className="text-blue-500">Create one?</Link>
-          </p>
-        ) : (
+      {filteredTodos.length === 0 ? (
+        <p className="flex flex-col justify-center items-center basis-full">
+          No todos found.{" "}
+          <Link to="/todo/create" className="text-blue-500">
+            Create one?
+          </Link>
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
           <ul>
             {filteredTodos.map((todo) => (
               <li key={todo.id}>
-                <Link to={`/todo/edit/${todo.id}`} className="text-blue-500 hover:underline">{todo.description}</Link>
+                <Link
+                  to={`/todo/edit/${todo.id}`}
+                  className="text-blue-500 hover:no-underline"
+                >
+                  <div
+                    className={`p-4 rounded-md shadow-md ${getStatusColor(
+                      todo.status
+                    )} mb-4 transition duration-300 ease-in-out hover:bg-gray-300`}
+                  >
+                    <p className="text-lg font-semibold">{todo.description}</p>
+                    <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
+                    <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>
-        )}
+          <Link to="/todo/create" className="text-blue-500">
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new Todo</button>
+                </Link>
+        </div>
+      )}
     </div>
   );
 }

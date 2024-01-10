@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
+import dayjs from 'dayjs';
+import 'dayjs/locale/hr'; // Import Croatian locale
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState("");
@@ -18,7 +20,7 @@ export default function TodoCreate(): JSX.Element {
       id: new Date().getTime() - Math.floor(Math.random() * 1000),
       description,
       status: "pending",
-      created_at: new Date().toLocaleDateString(),
+      created_at: dayjs().locale('hr').format('D. MMMM YYYY.'),
     };
 
     // Save the new todo to local storage
