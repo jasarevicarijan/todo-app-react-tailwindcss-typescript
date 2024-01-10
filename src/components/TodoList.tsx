@@ -134,7 +134,7 @@ export default function TodoList() {
             ))}
           </ul>
           <Link to="/todo/create" className="text-blue-500">
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add new Todo</button>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md">Add new Todo</button>
                 </Link>
         </div>
       )}
