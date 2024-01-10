@@ -37,17 +37,18 @@ export default function TodoList() {
   }, [todos, filterStatus, searchTerm]);
 
   return (
-    <div>
-      <h1>Todo List</h1>
+    <div className="container flex flex-col mx-auto p-4 h-[100svh]">
+      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
 
-      <div>
+      <div className="flex items-center mb-4">
         <input
           type="text"
           placeholder="Search by description"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md mr-2 basis-8/12"
         />
-        <div>
+        <div className="basis-4/12">
           <label>
             <input
               type="radio"
@@ -55,6 +56,7 @@ export default function TodoList() {
               value="all"
               checked={filterStatus === "all"}
               onChange={() => setFilterStatus("all")}
+              className="mr-1 ml-2"
             />
             {""}All
           </label>
@@ -65,6 +67,7 @@ export default function TodoList() {
               value="pending"
               checked={filterStatus === "pending"}
               onChange={() => setFilterStatus("pending")}
+              className="ml-3"
             />{" "}
             Pending
           </label>
@@ -75,6 +78,7 @@ export default function TodoList() {
               value="in_progress"
               checked={filterStatus === "in_progress"}
               onChange={() => setFilterStatus("in_progress")}
+              className="ml-3"
             />{" "}
             In Progress
           </label>
@@ -85,27 +89,26 @@ export default function TodoList() {
               value="done"
               checked={filterStatus === "done"}
               onChange={() => setFilterStatus("done")}
+              className="ml-3"
             />{" "}
             Done
           </label>
         </div>
       </div>
 
-      <div>
         {filteredTodos.length === 0 ? (
-          <p>
-            No todos found. <Link to="/todo/create">Create one?</Link>
+          <p className="flex flex-col justify-center items-center basis-full">
+            No todos found. <Link to="/todo/create" className="text-blue-500">Create one?</Link>
           </p>
         ) : (
           <ul>
             {filteredTodos.map((todo) => (
               <li key={todo.id}>
-                <Link to={`/todo/edit/${todo.id}`}>{todo.description}</Link>
+                <Link to={`/todo/edit/${todo.id}`} className="text-blue-500 hover:underline">{todo.description}</Link>
               </li>
             ))}
           </ul>
         )}
-      </div>
     </div>
   );
 }
