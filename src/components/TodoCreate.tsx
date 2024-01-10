@@ -40,7 +40,6 @@ export default function TodoCreate(): JSX.Element {
 
   return (
     <div className="container flex flex-col mx-4 p-4">
-      <h1 className="text-2xl font-bold mb-4">Create Todo</h1>
       <form className="flex flex-col">
         <textarea
           value={description}

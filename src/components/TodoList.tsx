@@ -46,7 +46,14 @@ export default function TodoList() {
 
   return (
     <div className="container flex flex-col mx-auto p-4 h-[100svh]">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-4">Todo Planner</h1>
+        <Link to="/todo/create" className="text-blue-500">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md">
+            Add new Todo
+          </button>
+        </Link>
+      </div>
 
       <div className="flex items-center mb-4">
         <input
@@ -123,7 +130,7 @@ export default function TodoList() {
                   <div
                     className={`p-4 rounded-md shadow-md ${getStatusColor(
                       todo.status
-                    )} mb-4 transition duration-300 ease-in-out hover:bg-gray-300`}
+                    )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
                   >
                     <p className="text-lg font-semibold">{todo.description}</p>
                     <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
@@ -133,9 +140,6 @@ export default function TodoList() {
               </li>
             ))}
           </ul>
-          <Link to="/todo/create" className="text-blue-500">
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md">Add new Todo</button>
-                </Link>
         </div>
       )}
     </div>
