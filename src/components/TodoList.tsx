@@ -34,9 +34,9 @@ export default function TodoList() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-200";
+        return "bg-red-200";
       case "in_progress":
-        return "bg-blue-200";
+        return "bg-yellow-200";
       case "done":
         return "bg-green-200";
       default:
