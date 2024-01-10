@@ -47,7 +47,7 @@ export default function TodoCreate(): JSX.Element {
           value={description}
           onChange={handleDescriptionChange}
           placeholder="Enter todo description (betweeen 10 and 255 characters)."
-          className="px-3 py-2 border border-gray-300 rounded-md mb-4"
+          className="px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none"
           rows={4}
         ></textarea>
         <button
