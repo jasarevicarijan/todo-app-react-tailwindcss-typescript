@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
-import dayjs from 'dayjs';
-import 'dayjs/locale/hr'; // Import Croatian locale
+import dayjs from "dayjs";
+import "dayjs/locale/hr"; // Import Croatian locale
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState("");
@@ -20,7 +20,7 @@ export default function TodoCreate(): JSX.Element {
       id: new Date().getTime() - Math.floor(Math.random() * 1000),
       description,
       status: "pending",
-      created_at: dayjs().locale('hr').format('D. MMMM YYYY.'),
+      created_at: dayjs().locale("hr").format("D. MMMM YYYY."),
     };
 
     // Save the new todo to local storage
@@ -40,6 +40,9 @@ export default function TodoCreate(): JSX.Element {
 
   return (
     <div className="container flex flex-col mx-4 p-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-4">Add new Todo</h1>
+      </div>
       <form className="flex flex-col">
         <textarea
           value={description}
@@ -48,7 +51,9 @@ export default function TodoCreate(): JSX.Element {
           className="px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none"
           rows={4}
         ></textarea>
-        <div className="flex justify-end"> {/* Use flex and justify-end */}
+        <div className="flex justify-end">
+          {" "}
+          {/* Use flex and justify-end */}
           <button
             onClick={handleSaveTodo}
             disabled={!isDescriptionValid}
@@ -62,5 +67,4 @@ export default function TodoCreate(): JSX.Element {
       </form>
     </div>
   );
-  
 }
