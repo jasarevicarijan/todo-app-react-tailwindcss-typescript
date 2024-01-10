@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-interface Todo {
-  id: string;
-  description: string;
-  status: "pending" | "in_progress" | "done";
-}
+import {ITodo} from "../types/todo";
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const storedTodos = JSON.parse(
       localStorage.getItem("todos") || "[]"
-    ) as Todo[];
+    ) as ITodo[];
     setTodos(storedTodos);
   }, []);
 
