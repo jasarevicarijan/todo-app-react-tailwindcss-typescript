@@ -132,9 +132,13 @@ export default function TodoList() {
                       todo.status
                     )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
                   >
-                    <p className="text-lg font-semibold">{todo.description}</p>
-                    <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
-                    <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
+                    <p className="text-lg font-semibold text-left">
+                      {todo.description}
+                    </p>
+                    <div className="flex justify-between">
+                      <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
+                      <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
+                    </div>
                   </div>
                 </Link>
               </li>
