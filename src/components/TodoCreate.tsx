@@ -6,12 +6,16 @@ import "dayjs/locale/hr"; // Import Croatian locale
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState("");
+  const [showValidationMessage, setShowValidationMessage] = useState(false);
   const navigate = useNavigate();
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setDescription(event.target.value);
+    // Check and update the visibility of the validation message
+    const isValidLength = event.target.value.length >= 10 && event.target.value.length <= 255;
+    setShowValidationMessage(!isValidLength);
   };
 
   const handleSaveTodo = () => {
@@ -47,10 +51,15 @@ export default function TodoCreate(): JSX.Element {
         <textarea
           value={description}
           onChange={handleDescriptionChange}
-          placeholder="Enter todo description (between 10 and 255 characters)."
+          placeholder="Enter todo description."
           className="px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none"
           rows={4}
         ></textarea>
+         {showValidationMessage && (
+          <p className="text-red-500 mb-4">
+            Description must be between 10 and 255 characters.
+          </p>
+        )}
         <div className="flex justify-end">
           {" "}
           {/* Use flex and justify-end */}
