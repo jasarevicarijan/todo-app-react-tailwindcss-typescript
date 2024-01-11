@@ -12,6 +12,7 @@ export default function TodoEdit(): JSX.Element {
 
   const [todo, setTodo] = useState<ITodo | null>(null);
   const [editableDescription, setEditableDescription] = useState<string>("");
+  const [isDescriptionValid, setIsDescriptionValid] = useState<boolean>(true);
 
   useEffect(() => {
     // Load the todo based on the ID from the URL params
@@ -65,7 +66,7 @@ export default function TodoEdit(): JSX.Element {
   };
 
   const handleSaveChanges = () => {
-    if (todo) {
+    if (todo && isDescriptionValid) {
       const existingTodos: ITodo[] = JSON.parse(
         localStorage.getItem("todos") || "[]"
       );
@@ -108,6 +109,11 @@ export default function TodoEdit(): JSX.Element {
     }
   };
 
+  const validateDescription = (description: string) => {
+    const isValid = description.length >= 10 && description.length <= 255;
+    setIsDescriptionValid(isValid);
+  };
+
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -118,9 +124,19 @@ export default function TodoEdit(): JSX.Element {
           <input
             type="text"
             value={editableDescription}
-            onChange={(e) => setEditableDescription(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
+            onChange={(e) => {
+              setEditableDescription(e.target.value);
+              validateDescription(e.target.value);
+            }}
+            className={`w-full px-3 py-2 border rounded-md mb-4 ${
+              isDescriptionValid ? "border-gray-300" : "border-red-500"
+            }`}
           />
+          {!isDescriptionValid && (
+            <p className="text-red-500 text-sm mb-4">
+              Description must be between 10 and 255 characters.
+            </p>
+          )}
           <div className="flex justify-between mb-4">
             <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
             <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
