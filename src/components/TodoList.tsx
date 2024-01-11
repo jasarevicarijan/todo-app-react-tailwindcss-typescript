@@ -125,14 +125,14 @@ export default function TodoList() {
               <li key={todo.id}>
                 <Link
                   to={`/todo/edit/${todo.id}`}
-                  className="text-blue-500 hover:no-underline"
+                  className="text-gray-900 hover:no-underline"
                 >
                   <div
                     className={`p-4 rounded-md shadow-md ${getStatusColor(
                       todo.status
                     )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
                   >
-                    <p className="text-lg font-semibold text-left">
+                    <p className="text-lg font-semibold text-left break-all">
                       {todo.description}
                     </p>
                     <div className="flex justify-between">
