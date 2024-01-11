@@ -14,8 +14,7 @@ export default function TodoCreate(): JSX.Element {
   ) => {
     setDescription(event.target.value);
     // Check and update the visibility of the validation message
-    const isValidLength =
-      event.target.value.length >= 10 && event.target.value.length <= 255;
+    const isValidLength = event.target.value.length >= 10 && event.target.value.length <= 255;
     setShowValidationMessage(!isValidLength);
   };
 
@@ -56,7 +55,7 @@ export default function TodoCreate(): JSX.Element {
           className="px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none"
           rows={4}
         ></textarea>
-        {showValidationMessage && (
+         {showValidationMessage && (
           <p className="text-red-500 mb-4">
             Description must be between 10 and 255 characters.
           </p>
