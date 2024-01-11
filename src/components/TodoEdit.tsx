@@ -15,7 +15,9 @@ export default function TodoEdit(): JSX.Element {
 
   useEffect(() => {
     // Load the todo based on the ID from the URL params
-    const existingTodos: ITodo[] = JSON.parse(localStorage.getItem("todos") || "[]");
+    const existingTodos: ITodo[] = JSON.parse(
+      localStorage.getItem("todos") || "[]"
+    );
     const selectedTodo = existingTodos.find((t) => t.id.toString() === todo_id);
 
     if (selectedTodo) {
@@ -28,7 +30,9 @@ export default function TodoEdit(): JSX.Element {
 
   const handleStageChange = (newStatus: string) => {
     if (todo) {
-      const existingTodos: ITodo[] = JSON.parse(localStorage.getItem("todos") || "[]");
+      const existingTodos: ITodo[] = JSON.parse(
+        localStorage.getItem("todos") || "[]"
+      );
 
       // Check if there is already a todo in "in_progress"
       const isInProgress = existingTodos.some(
@@ -44,9 +48,15 @@ export default function TodoEdit(): JSX.Element {
         );
 
         localStorage.setItem("todos", JSON.stringify(updatedTodos));
-        setTodo((prevTodo) =>
-          prevTodo ? { ...prevTodo, status: newStatus } : null
-        );
+        setTodo((prevTodo: ITodo | null) => {
+          if (prevTodo) {
+            return {
+              ...prevTodo,
+              status: newStatus as "pending" | "in_progress" | "done", // Type assertion
+            };
+          }
+          return null;
+        });
 
         // Redirect back to the list screen after updating
         navigate("/todo/list");
@@ -56,16 +66,24 @@ export default function TodoEdit(): JSX.Element {
 
   const handleSaveChanges = () => {
     if (todo) {
-      const existingTodos: ITodo[] = JSON.parse(localStorage.getItem("todos") || "[]");
+      const existingTodos: ITodo[] = JSON.parse(
+        localStorage.getItem("todos") || "[]"
+      );
 
       const updatedTodos = existingTodos.map((t) =>
         t.id === todo.id ? { ...t, description: editableDescription } : t
       );
 
       localStorage.setItem("todos", JSON.stringify(updatedTodos));
-      setTodo((prevTodo) =>
-        prevTodo ? { ...prevTodo, description: editableDescription } : null
-      );
+      setTodo((prevTodo: ITodo | null) => {
+        if (prevTodo) {
+          return {
+            ...prevTodo,
+            description: editableDescription,
+          };
+        }
+        return null;
+      });
 
       // Redirect back to the list screen after saving changes
       navigate("/todo/list");
@@ -74,9 +92,13 @@ export default function TodoEdit(): JSX.Element {
 
   const handleDeleteTodo = () => {
     if (todo) {
-      const confirmDelete = window.confirm("Are you sure you want to delete this todo?");
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this todo?"
+      );
       if (confirmDelete) {
-        const existingTodos: ITodo[] = JSON.parse(localStorage.getItem("todos") || "[]");
+        const existingTodos: ITodo[] = JSON.parse(
+          localStorage.getItem("todos") || "[]"
+        );
 
         const updatedTodos = existingTodos.filter((t) => t.id !== todo.id);
         localStorage.setItem("todos", JSON.stringify(updatedTodos));
