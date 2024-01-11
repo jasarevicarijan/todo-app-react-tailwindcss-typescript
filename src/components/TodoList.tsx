@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
 
-export default function TodoList() {
+export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
