@@ -3,33 +3,31 @@ import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
 import { TodoStatus } from "../enums/status";
 import TodoItem from "../components/TodoItem";
+import TodoFilter from "../components/TodoFilter";
 
 export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
 
   useEffect(() => {
     const storedTodos = JSON.parse(
       localStorage.getItem("todos") || "[]"
     ) as ITodo[];
     setTodos(storedTodos);
+    setFilteredTodos(storedTodos);
   }, []);
 
+  const handleSearchTermChange = (value: string) => {
+    const filtered = todos.filter((todo) => todo.description.includes(value));
+    setFilteredTodos(filtered);
+  };
+
   const columns: { [key: string]: ITodo[] } = {
-    pending: todos.filter(
-      (todo) =>
-        todo.status === TodoStatus.Pending &&
-        todo.description.includes(searchTerm)
+    pending: filteredTodos.filter((todo) => todo.status === TodoStatus.Pending),
+    in_progress: filteredTodos.filter(
+      (todo) => todo.status === TodoStatus.InProgress
     ),
-    in_progress: todos.filter(
-      (todo) =>
-        todo.status === TodoStatus.InProgress &&
-        todo.description.includes(searchTerm)
-    ),
-    done: todos.filter(
-      (todo) =>
-        todo.status === TodoStatus.Done && todo.description.includes(searchTerm)
-    ),
+    done: filteredTodos.filter((todo) => todo.status === TodoStatus.Done),
   };
 
   return (
@@ -43,15 +41,7 @@ export default function TodoList(): JSX.Element {
         </Link>
       </div>
 
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search by description"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md mr-2 w-full"
-        />
-      </div>
+      <TodoFilter onSearchTermChange={handleSearchTermChange} />
 
       <div className="grid grid-cols-3 gap-4">
         {Object.entries(columns).map(([status, items]) => {
