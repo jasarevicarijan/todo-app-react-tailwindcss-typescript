@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
 import { TTodoStatus, TodoStatus } from "../enums/status";
+import TextareaWithValidation from "../components/TextareaWithValidation";
 
 type TodoEditParams = {
   todo_id: string;
@@ -180,22 +181,16 @@ export default function TodoEdit(): JSX.Element {
       {todo ? (
         <div>
           <form className="flex flex-col" onSubmit={handleSaveChanges}>
-            <textarea
+            <TextareaWithValidation
               value={editableDescription}
               onChange={handleEditableDescriptionChange}
-              placeholder="Enter todo description."
               onBlur={handleDescriptionBlur}
               onKeyDown={handleKeyDown}
-              className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
-                !isDescriptionValid && "border-red-500"
-              }`}
-              rows={4}
-            ></textarea>
-            {!isDescriptionValid && (
-              <p className="text-red-500 mb-2">
-                Description must be between 10 and 255 characters.
-              </p>
-            )}
+              isDescriptionValid={isDescriptionValid}
+              placeholder="Enter todo description."
+              minCharacters={10}
+              maxCharacters={255}
+            />
             <div className="flex justify-between">
               <div>
                 <button

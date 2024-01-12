@@ -4,6 +4,7 @@ import { ITodo } from "../types/todo";
 import dayjs from "dayjs";
 import "dayjs/locale/hr"; // Import Croatian locale
 import { TodoStatus } from "../enums/status";
+import TextareaWithValidation from "../components/TextareaWithValidation";
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState<string>("");
@@ -69,23 +70,16 @@ export default function TodoCreate(): JSX.Element {
         <h1 className="text-2xl font-bold mb-4">Add new Todo</h1>
       </div>
       <form className="flex flex-col" onSubmit={handleSaveTodo}>
-        <textarea
+        <TextareaWithValidation
           value={description}
           onChange={handleDescriptionChange}
-          placeholder="Enter todo description."
           onBlur={handleDescriptionBlur}
           onKeyDown={handleKeyDown}
-          className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
-            !isDescriptionValid && "border-red-500"
-          }`}
-          rows={4}
-        ></textarea>
-        {!isDescriptionValid && (
-          <p className="text-red-500 mb-2">
-            Description must be between 10 and 255 characters.
-          </p>
-        )}
-
+          isDescriptionValid={isDescriptionValid}
+          placeholder="Enter todo description."
+          minCharacters={10}
+          maxCharacters={255}
+        />
         <div className="flex justify-between">
           {" "}
           <button
