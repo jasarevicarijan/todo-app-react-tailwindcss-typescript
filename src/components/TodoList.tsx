@@ -55,7 +55,7 @@ export default function TodoList(): JSX.Element {
 
       <div className="grid grid-cols-3 gap-4">
         {Object.entries(columns).map(([status, items]) => (
-          <div key={status}>
+          <div key={status} className="border rounded-md p-4 h-full bg-gray-50">
             <h2 className="text-lg font-bold mb-2">
               {status
                 .split("_")
