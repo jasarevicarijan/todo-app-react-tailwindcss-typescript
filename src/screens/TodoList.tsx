@@ -13,9 +13,30 @@ export default function TodoList(): JSX.Element {
     const storedTodos = JSON.parse(
       localStorage.getItem("todos") || "[]"
     ) as ITodo[];
-    setTodos(storedTodos);
-    setFilteredTodos(storedTodos);
+
+    const groupedTodos = groupTodosByStatus(storedTodos);
+    setTodos(groupedTodos);
+    setFilteredTodos(groupedTodos);
   }, []);
+
+  const groupTodosByStatus = (todos: ITodo[]): ITodo[] => {
+    const groupedTodos: ITodo[] = [];
+    const statusMap: { [key: string]: ITodo[] } = {};
+
+    todos.forEach((todo) => {
+      const status = todo.status;
+      if (!statusMap[status]) {
+        statusMap[status] = [];
+      }
+      statusMap[status].push(todo);
+    });
+
+    for (const status in statusMap) {
+      groupedTodos.push(...statusMap[status]);
+    }
+
+    return groupedTodos;
+  };
 
   const handleSearchTermChange = (value: string) => {
     const filtered = todos.filter((todo) => todo.description.includes(value));
