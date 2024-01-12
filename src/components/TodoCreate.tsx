@@ -6,19 +6,31 @@ import "dayjs/locale/hr"; // Import Croatian locale
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState("");
-  const [showValidationMessage, setShowValidationMessage] = useState(false);
+  const [isDescriptionValid, setIsDescriptionValid] = useState(true);
   const navigate = useNavigate();
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setDescription(event.target.value);
-    // Check and update the visibility of the validation message
-    const isValidLength = event.target.value.length >= 10 && event.target.value.length <= 255;
-    setShowValidationMessage(!isValidLength);
+    // Remove validation on each change
+    setIsDescriptionValid(true);
+  };
+
+  const handleDescriptionBlur = () => {
+    // Validate the description onBlur
+    setIsDescriptionValid(
+      description.length >= 10 && description.length <= 255
+    );
   };
 
   const handleSaveTodo = () => {
+    // Check if description is valid before saving
+    if (!isDescriptionValid) {
+      alert("Description must be between 10 and 255 characters.");
+      return;
+    }
+
     // Create new Todo and generate random id
     const newTodo: ITodo = {
       id: new Date().getTime() - Math.floor(Math.random() * 1000),
@@ -38,10 +50,6 @@ export default function TodoCreate(): JSX.Element {
     navigate("/todo/list");
   };
 
-  // Validate description length to enable/disable the save button
-  const isDescriptionValid =
-    description.length >= 10 && description.length <= 255;
-
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -52,11 +60,13 @@ export default function TodoCreate(): JSX.Element {
           value={description}
           onChange={handleDescriptionChange}
           placeholder="Enter todo description."
-          className="px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none"
-          rows={4}
+          onBlur={handleDescriptionBlur} // Add onBlur event handler
+          className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
+            !isDescriptionValid && "border-red-500"
+          }`}          rows={4}
         ></textarea>
-         {showValidationMessage && (
-          <p className="text-red-500 mb-4">
+         {!isDescriptionValid && (
+          <p className="text-red-500 mb-2">
             Description must be between 10 and 255 characters.
           </p>
         )}
