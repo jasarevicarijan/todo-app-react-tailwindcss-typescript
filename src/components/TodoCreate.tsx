@@ -50,6 +50,12 @@ export default function TodoCreate(): JSX.Element {
     navigate("/todo/list");
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if(event.key === 'Enter') {
+      handleSaveTodo();
+    }
+  }
+
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -61,6 +67,7 @@ export default function TodoCreate(): JSX.Element {
           onChange={handleDescriptionChange}
           placeholder="Enter todo description."
           onBlur={handleDescriptionBlur} // Add onBlur event handler
+          onKeyDown={handleKeyDown}
           className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
             !isDescriptionValid && "border-red-500"
           }`}          rows={4}
