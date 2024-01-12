@@ -164,44 +164,52 @@ export default function TodoEdit(): JSX.Element {
                 Description must be between 10 and 255 characters.
               </p>
             )}
-            <div className="flex justify-end">
+            <div className="flex justify-between">
               {" "}
-              <button onClick={handleCancel} type="button" className="bg-gray-100 mr-2 px-4 py-2 rounded-md transition duration-300 hover:bg-gray-200 hover:shadow-md inline-block">
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={!isDescriptionValid}
-                className={`bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block ${
-                  !isDescriptionValid && "opacity-50 cursor-not-allowed"
-                }`}
-              >
-                Save Todo
-              </button>
-              {todo.status === "pending" && (
-                <>
-                  <button
-                    onClick={() => handleStageChange("in_progress")}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
-                  >
-                    Move to In Progress
-                  </button>
-                </>
-              )}
-              {todo.status === "in_progress" && (
+              <div>
                 <button
-                  onClick={() => handleStageChange("done")}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
+                  onClick={handleCancel}
+                  type="button"
+                  className="bg-gray-100 mr-2 px-4 py-2 rounded-md transition duration-300 hover:bg-gray-200 hover:shadow-md inline-block"
                 >
-                  Mark as Done
+                  Cancel
                 </button>
-              )}
-              <button
-                onClick={handleDeleteTodo}
-                className="bg-red-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600 hover:shadow-md inline-block"
-              >
-                Delete Todo
-              </button>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  disabled={!isDescriptionValid}
+                  className={`bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block ${
+                    !isDescriptionValid && "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  Save Todo
+                </button>
+                {todo.status === "pending" && (
+                  <>
+                    <button
+                      onClick={() => handleStageChange("in_progress")}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
+                    >
+                      Move to In Progress
+                    </button>
+                  </>
+                )}
+                {todo.status === "in_progress" && (
+                  <button
+                    onClick={() => handleStageChange("done")}
+                    className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
+                  >
+                    Mark as Done
+                  </button>
+                )}
+                <button
+                  onClick={handleDeleteTodo}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600 hover:shadow-md inline-block"
+                >
+                  Delete Todo
+                </button>
+              </div>
             </div>
           </form>
         </div>

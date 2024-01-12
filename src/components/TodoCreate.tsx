@@ -85,7 +85,7 @@ export default function TodoCreate(): JSX.Element {
           </p>
         )}
 
-        <div className="flex justify-end">
+        <div className="flex justify-between">
           {" "}
           <button
             onClick={handleCancel}
