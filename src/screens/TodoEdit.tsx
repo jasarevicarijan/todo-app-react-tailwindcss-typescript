@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
 
 type TodoEditParams = {
@@ -25,9 +25,10 @@ export default function TodoEdit(): JSX.Element {
       setTodo(selectedTodo);
       setEditableDescription(selectedTodo.description);
     } else {
-      navigate("/todo/list"); // Redirect to the list if todo is not found
+      setTodo(null);
+      console.log("No todos found");
     }
-  }, [todo_id, navigate]);
+  }, [todo_id]);
 
   const handleEditableDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -214,7 +215,16 @@ export default function TodoEdit(): JSX.Element {
           </form>
         </div>
       ) : (
-        <p>Todo not found.</p>
+        <div className="flex h-screen">
+          <div className="m-auto">
+            <p className="flx flex-col justify-center items-center basis-full">
+              No Todo found.{" "}
+              <Link to="/todo/list" className="text-blue-500">
+                Go back?
+              </Link>
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );
