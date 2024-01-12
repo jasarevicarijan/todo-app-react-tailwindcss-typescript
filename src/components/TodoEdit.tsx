@@ -29,6 +29,21 @@ export default function TodoEdit(): JSX.Element {
     }
   }, [todo_id, navigate]);
 
+  const handleEditableDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setEditableDescription(event.target.value);
+    // Remove validation on each change
+    setIsDescriptionValid(true);
+  };
+
+  const handleDescriptionBlur = () => {
+    // Validate the description onBlur
+    setIsDescriptionValid(
+      editableDescription.length >= 10 && editableDescription.length <= 255
+    );
+  };
+
   const handleStageChange = (newStatus: string) => {
     if (todo) {
       const existingTodos: ITodo[] = JSON.parse(
@@ -66,7 +81,11 @@ export default function TodoEdit(): JSX.Element {
   };
 
   const handleSaveChanges = () => {
-    if (todo && isDescriptionValid) {
+    if (!isDescriptionValid) {
+      alert("Description must be between 10 and 255 characters.");
+      return;
+    }
+    if (todo) {
       const existingTodos: ITodo[] = JSON.parse(
         localStorage.getItem("todos") || "[]"
       );
@@ -91,6 +110,12 @@ export default function TodoEdit(): JSX.Element {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      handleSaveChanges();
+    }
+  };
+
   const handleDeleteTodo = () => {
     if (todo) {
       const confirmDelete = window.confirm(
@@ -109,11 +134,6 @@ export default function TodoEdit(): JSX.Element {
     }
   };
 
-  const validateDescription = (description: string) => {
-    const isValid = description.length >= 10 && description.length <= 255;
-    setIsDescriptionValid(isValid);
-  };
-
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -121,64 +141,61 @@ export default function TodoEdit(): JSX.Element {
       </div>
       {todo ? (
         <div>
-          <input
-            type="text"
-            value={editableDescription}
-            onChange={(e) => {
-              setEditableDescription(e.target.value);
-              validateDescription(e.target.value);
-            }}
-            className={`w-full px-3 py-2 border rounded-md mb-4 ${
-              isDescriptionValid ? "border-gray-300" : "border-red-500"
-            }`}
-          />
-          {!isDescriptionValid && (
-            <p className="text-red-500 text-sm mb-4">
-              Description must be between 10 and 255 characters.
-            </p>
-          )}
-          <div className="flex justify-between mb-4">
-            <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
-            <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
-          </div>
-          <div className="flex justify-between">
-            {todo.status === "pending" && (
-              <>
-                <button
-                  onClick={() => handleStageChange("in_progress")}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
-                >
-                  Move to In Progress
-                </button>
+          <form className="flex flex-col">
+            <textarea
+              value={editableDescription}
+              onChange={handleEditableDescriptionChange}
+              placeholder="Enter todo description."
+              onBlur={handleDescriptionBlur}
+              onKeyDown={handleKeyDown}
+              className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
+                !isDescriptionValid && "border-red-500"
+              }`}
+              rows={4}
+            ></textarea>
+            {!isDescriptionValid && (
+              <p className="text-red-500 mb-2">
+                Description must be between 10 and 255 characters.
+              </p>
+            )}
+            <div className="flex justify-end">
+              {" "}
+              {/* Use flex and justify-end */}
+              <button
+                onClick={handleSaveChanges}
+                disabled={!isDescriptionValid}
+                className={`bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block ${
+                  !isDescriptionValid && "opacity-50 cursor-not-allowed"
+                }`}
+              >
+                Save Todo
+              </button>
+              {todo.status === "pending" && (
+                <>
+                  <button
+                    onClick={() => handleStageChange("in_progress")}
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
+                  >
+                    Move to In Progress
+                  </button>
+                </>
+              )}
+              {todo.status === "in_progress" && (
                 <button
                   onClick={() => handleStageChange("done")}
                   className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
                 >
                   Mark as Done
                 </button>
-              </>
-            )}
-            {todo.status === "in_progress" && (
+              )}
               <button
-                onClick={() => handleStageChange("done")}
-                className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
+                onClick={handleDeleteTodo}
+                className="bg-red-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600 hover:shadow-md inline-block"
               >
-                Mark as Done
+                Delete Todo
               </button>
-            )}
-            <button
-              onClick={handleSaveChanges}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block"
-            >
-              Save Changes
-            </button>
-            <button
-              onClick={handleDeleteTodo}
-              className="bg-red-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600 hover:shadow-md inline-block"
-            >
-              Delete Todo
-            </button>
-          </div>
+            </div>
+          </form>
         </div>
       ) : (
         <p>Todo not found.</p>

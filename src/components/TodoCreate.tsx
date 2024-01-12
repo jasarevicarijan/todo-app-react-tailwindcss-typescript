@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/hr"; // Import Croatian locale
 
 export default function TodoCreate(): JSX.Element {
-  const [description, setDescription] = useState("");
-  const [isDescriptionValid, setIsDescriptionValid] = useState(true);
+  const [description, setDescription] = useState<string>("");
+  const [isDescriptionValid, setIsDescriptionValid] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const handleDescriptionChange = (
@@ -51,10 +51,10 @@ export default function TodoCreate(): JSX.Element {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if(event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSaveTodo();
     }
-  }
+  };
 
   return (
     <div className="container flex flex-col mx-4 p-4">
@@ -66,13 +66,14 @@ export default function TodoCreate(): JSX.Element {
           value={description}
           onChange={handleDescriptionChange}
           placeholder="Enter todo description."
-          onBlur={handleDescriptionBlur} // Add onBlur event handler
+          onBlur={handleDescriptionBlur}
           onKeyDown={handleKeyDown}
           className={`px-3 py-2 border border-gray-300 rounded-md mb-4 resize-none ${
             !isDescriptionValid && "border-red-500"
-          }`}          rows={4}
+          }`}
+          rows={4}
         ></textarea>
-         {!isDescriptionValid && (
+        {!isDescriptionValid && (
           <p className="text-red-500 mb-2">
             Description must be between 10 and 255 characters.
           </p>
