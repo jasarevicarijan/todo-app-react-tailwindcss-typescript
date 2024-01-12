@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
 
@@ -152,7 +152,7 @@ export default function TodoEdit(): JSX.Element {
                 </button>
                 <button
                   onClick={() => handleStageChange("done")}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block hidden"
+                  className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
                 >
                   Mark as Done
                 </button>
