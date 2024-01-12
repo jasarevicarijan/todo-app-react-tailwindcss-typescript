@@ -80,7 +80,9 @@ export default function TodoEdit(): JSX.Element {
     }
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = (event: React.FormEvent) => {
+    event.preventDefault();
+
     if (!isDescriptionValid) {
       alert("Description must be between 10 and 255 characters.");
       return;
@@ -112,7 +114,7 @@ export default function TodoEdit(): JSX.Element {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
-      handleSaveChanges();
+      handleSaveChanges(event);
     }
   };
 
@@ -141,7 +143,7 @@ export default function TodoEdit(): JSX.Element {
       </div>
       {todo ? (
         <div>
-          <form className="flex flex-col">
+          <form className="flex flex-col" onSubmit={handleSaveChanges}>
             <textarea
               value={editableDescription}
               onChange={handleEditableDescriptionChange}
@@ -162,7 +164,7 @@ export default function TodoEdit(): JSX.Element {
               {" "}
               {/* Use flex and justify-end */}
               <button
-                onClick={handleSaveChanges}
+                type="submit"
                 disabled={!isDescriptionValid}
                 className={`bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block ${
                   !isDescriptionValid && "opacity-50 cursor-not-allowed"

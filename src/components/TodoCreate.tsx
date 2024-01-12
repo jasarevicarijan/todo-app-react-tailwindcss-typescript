@@ -24,7 +24,8 @@ export default function TodoCreate(): JSX.Element {
     );
   };
 
-  const handleSaveTodo = () => {
+  const handleSaveTodo = (event: { preventDefault: () => void; } | undefined) => {
+    event!.preventDefault();
     // Check if description is valid before saving
     if (!isDescriptionValid) {
       alert("Description must be between 10 and 255 characters.");
@@ -52,7 +53,7 @@ export default function TodoCreate(): JSX.Element {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
-      handleSaveTodo();
+      handleSaveTodo(event);
     }
   };
 
@@ -61,7 +62,7 @@ export default function TodoCreate(): JSX.Element {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-4">Add new Todo</h1>
       </div>
-      <form className="flex flex-col">
+      <form className="flex flex-col" onSubmit={handleSaveTodo}>
         <textarea
           value={description}
           onChange={handleDescriptionChange}
@@ -82,7 +83,7 @@ export default function TodoCreate(): JSX.Element {
           {" "}
           {/* Use flex and justify-end */}
           <button
-            onClick={handleSaveTodo}
+            type="submit"
             disabled={!isDescriptionValid}
             className={`bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md mr-2 inline-block ${
               !isDescriptionValid && "opacity-50 cursor-not-allowed"
