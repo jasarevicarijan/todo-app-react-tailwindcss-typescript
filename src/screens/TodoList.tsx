@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
 import { TodoStatus } from "../enums/status";
-
+import TodoItem from "../components/TodoItem";
 
 export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -15,30 +15,20 @@ export default function TodoList(): JSX.Element {
     setTodos(storedTodos);
   }, []);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case TodoStatus.Pending:
-        return "bg-red-200";
-      case TodoStatus.InProgress:
-        return "bg-yellow-200";
-      case TodoStatus.Done:
-        return "bg-green-200";
-      default:
-        return "bg-gray-200";
-    }
-  };
-
   const columns: { [key: string]: ITodo[] } = {
     pending: todos.filter(
       (todo) =>
-        todo.status === TodoStatus.Pending && todo.description.includes(searchTerm)
+        todo.status === TodoStatus.Pending &&
+        todo.description.includes(searchTerm)
     ),
     in_progress: todos.filter(
       (todo) =>
-        todo.status === TodoStatus.InProgress && todo.description.includes(searchTerm)
+        todo.status === TodoStatus.InProgress &&
+        todo.description.includes(searchTerm)
     ),
     done: todos.filter(
-      (todo) => todo.status === TodoStatus.Done && todo.description.includes(searchTerm)
+      (todo) =>
+        todo.status === TodoStatus.Done && todo.description.includes(searchTerm)
     ),
   };
 
@@ -100,19 +90,7 @@ export default function TodoList(): JSX.Element {
                       to={`/todo/edit/${todo.id}`}
                       className="text-gray-900 hover:no-underline"
                     >
-                      <div
-                        className={`p-4 rounded-md shadow-md ${getStatusColor(
-                          todo.status
-                        )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
-                      >
-                        <p className="text-lg font-semibold text-left break-all">
-                          {todo.description}
-                        </p>
-                        <div className="flex justify-between">
-                          <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
-                          <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
-                        </div>
-                      </div>
+                      <TodoItem todo={todo} />
                     </Link>
                   </li>
                 ))}
