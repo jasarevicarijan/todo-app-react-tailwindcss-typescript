@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
 
@@ -27,9 +27,17 @@ export default function TodoList(): JSX.Element {
   };
 
   const columns: { [key: string]: ITodo[] } = {
-    pending: todos.filter((todo) => todo.status === "pending"),
-    in_progress: todos.filter((todo) => todo.status === "in_progress"),
-    done: todos.filter((todo) => todo.status === "done"),
+    pending: todos.filter(
+      (todo) =>
+        todo.status === "pending" && todo.description.includes(searchTerm)
+    ),
+    in_progress: todos.filter(
+      (todo) =>
+        todo.status === "in_progress" && todo.description.includes(searchTerm)
+    ),
+    done: todos.filter(
+      (todo) => todo.status === "done" && todo.description.includes(searchTerm)
+    ),
   };
 
   return (
@@ -37,7 +45,7 @@ export default function TodoList(): JSX.Element {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-4">Todo Planner</h1>
         <Link to="/todo/create" className="text-blue-500">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md">
+          <button className="bg-blue-500 text-white px-4 py-2 mb-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md">
             Add new Todo
           </button>
         </Link>
