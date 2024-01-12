@@ -24,8 +24,9 @@ export default function TodoCreate(): JSX.Element {
     );
   };
 
-  const handleSaveTodo = (event: { preventDefault: () => void; } | undefined) => {
-    event!.preventDefault();
+  const handleSaveTodo = (event: React.FormEvent) => {
+    event.preventDefault();
+
     // Check if description is valid before saving
     if (!isDescriptionValid) {
       alert("Description must be between 10 and 255 characters.");
