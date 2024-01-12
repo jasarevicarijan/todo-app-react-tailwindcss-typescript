@@ -58,6 +58,10 @@ export default function TodoCreate(): JSX.Element {
     }
   };
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -83,11 +87,13 @@ export default function TodoCreate(): JSX.Element {
 
         <div className="flex justify-end">
           {" "}
-          <a href="javascript:history.go(-1)">
-            <button className="bg-gray-100 mr-2 px-4 py-2 rounded-md transition duration-300 hover:bg-gray-200 hover:shadow-md inline-block">
-              Cancel
-            </button>
-          </a>
+          <button
+            onClick={handleCancel}
+            type="button"
+            className="bg-gray-100 mr-2 px-4 py-2 rounded-md transition duration-300 hover:bg-gray-200 hover:shadow-md inline-block"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             disabled={!isDescriptionValid}
