@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
+import { renderToReadableStream } from "react-dom/server";
 
 type TodoEditParams = {
   todo_id: string;
@@ -145,6 +146,32 @@ export default function TodoEdit(): JSX.Element {
     window.history.back();
   };
 
+  const renderStatusButtons = () => {
+    if (!todo) return;
+
+    if (todo.status === "pending") {
+      return (
+        <>
+          <button
+            onClick={() => handleStageChange("in_progress")}
+            className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
+          >
+            Move to In Progress
+          </button>
+        </>
+      );
+    } else if (todo.status === "in_progress") {
+      return (
+        <button
+          onClick={() => handleStageChange("done")}
+          className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
+        >
+          Mark as Done
+        </button>
+      );
+    }
+  };
+
   return (
     <div className="container flex flex-col mx-4 p-4">
       <div className="flex justify-between items-center">
@@ -189,24 +216,7 @@ export default function TodoEdit(): JSX.Element {
                 >
                   Save Todo
                 </button>
-                {todo.status === "pending" && (
-                  <>
-                    <button
-                      onClick={() => handleStageChange("in_progress")}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
-                    >
-                      Move to In Progress
-                    </button>
-                  </>
-                )}
-                {todo.status === "in_progress" && (
-                  <button
-                    onClick={() => handleStageChange("done")}
-                    className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
-                  >
-                    Mark as Done
-                  </button>
-                )}
+                {renderStatusButtons()}
                 <button
                   onClick={handleDeleteTodo}
                   className="bg-red-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600 hover:shadow-md inline-block"
