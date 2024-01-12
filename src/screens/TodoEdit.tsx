@@ -15,70 +15,67 @@ export default function TodoEdit(): JSX.Element {
   const [isDescriptionValid, setIsDescriptionValid] = useState<boolean>(true);
 
   useEffect(() => {
-    // Load the todo based on the ID from the URL params
     const existingTodos: ITodo[] = JSON.parse(
       localStorage.getItem("todos") || "[]"
     );
     const selectedTodo = existingTodos.find((t) => t.id.toString() === todo_id);
 
-    if (selectedTodo) {
-      setTodo(selectedTodo);
-      setEditableDescription(selectedTodo.description);
-    } else {
-      setTodo(null);
+    if (!selectedTodo) {
       console.log("No todos found");
+      return;
     }
+
+    setTodo(selectedTodo);
+    setEditableDescription(selectedTodo.description);
   }, [todo_id]);
 
   const handleEditableDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setEditableDescription(event.target.value);
-    // Remove validation on each change
     setIsDescriptionValid(true);
   };
 
   const handleDescriptionBlur = () => {
-    // Validate the description onBlur
     setIsDescriptionValid(
       editableDescription.length >= 10 && editableDescription.length <= 255
     );
   };
 
   const handleStageChange = (newStatus: string) => {
-    if (todo) {
-      const existingTodos: ITodo[] = JSON.parse(
-        localStorage.getItem("todos") || "[]"
-      );
-
-      // Check if there is already a todo in "in_progress"
-      const isInProgress = existingTodos.some(
-        (t) => t.status === "in_progress" && t.id !== todo.id
-      );
-
-      if (isInProgress && newStatus === "in_progress") {
-        alert("There can only be one todo in 'in_progress' at a time.");
-      } else {
-        // Toggle the status between "pending", "in_progress", and "done"
-        const updatedTodos = existingTodos.map((t) =>
-          t.id === todo.id ? { ...t, status: newStatus } : t
-        );
-
-        localStorage.setItem("todos", JSON.stringify(updatedTodos));
-        setTodo((prevTodo: ITodo | null) => {
-          if (prevTodo) {
-            return {
-              ...prevTodo,
-              status: newStatus as "pending" | "in_progress" | "done", // Type assertion
-            };
-          }
-          return null;
-        });
-
-        // Redirect back to the list screen after updating
-        navigate("/todo/list");
-      }
+    if (!todo) {
+      return;
     }
+
+    const existingTodos: ITodo[] = JSON.parse(
+      localStorage.getItem("todos") || "[]"
+    );
+
+    const isInProgress = existingTodos.some(
+      (t) => t.status === "in_progress" && t.id !== todo.id
+    );
+
+    if (isInProgress && newStatus === "in_progress") {
+      alert("There can only be one todo in 'in_progress' at a time.");
+      return;
+    }
+
+    const updatedTodos = existingTodos.map((t) =>
+      t.id === todo.id ? { ...t, status: newStatus } : t
+    );
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodo((prevTodo: ITodo | null) => {
+      if (prevTodo) {
+        return {
+          ...prevTodo,
+          status: newStatus as "pending" | "in_progress" | "done",
+        };
+      }
+      return null;
+    });
+
+    navigate("/todo/list");
   };
 
   const handleSaveChanges = (event: React.FormEvent) => {
@@ -88,29 +85,31 @@ export default function TodoEdit(): JSX.Element {
       alert("Description must be between 10 and 255 characters.");
       return;
     }
-    if (todo) {
-      const existingTodos: ITodo[] = JSON.parse(
-        localStorage.getItem("todos") || "[]"
-      );
 
-      const updatedTodos = existingTodos.map((t) =>
-        t.id === todo.id ? { ...t, description: editableDescription } : t
-      );
-
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
-      setTodo((prevTodo: ITodo | null) => {
-        if (prevTodo) {
-          return {
-            ...prevTodo,
-            description: editableDescription,
-          };
-        }
-        return null;
-      });
-
-      // Redirect back to the list screen after saving changes
-      navigate("/todo/list");
+    if (!todo) {
+      return;
     }
+
+    const existingTodos: ITodo[] = JSON.parse(
+      localStorage.getItem("todos") || "[]"
+    );
+
+    const updatedTodos = existingTodos.map((t) =>
+      t.id === todo.id ? { ...t, description: editableDescription } : t
+    );
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodo((prevTodo: ITodo | null) => {
+      if (prevTodo) {
+        return {
+          ...prevTodo,
+          description: editableDescription,
+        };
+      }
+      return null;
+    });
+
+    navigate("/todo/list");
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -120,21 +119,26 @@ export default function TodoEdit(): JSX.Element {
   };
 
   const handleDeleteTodo = () => {
-    if (todo) {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this todo?"
-      );
-      if (confirmDelete) {
-        const existingTodos: ITodo[] = JSON.parse(
-          localStorage.getItem("todos") || "[]"
-        );
-
-        const updatedTodos = existingTodos.filter((t) => t.id !== todo.id);
-        localStorage.setItem("todos", JSON.stringify(updatedTodos));
-
-        navigate("/todo/list");
-      }
+    if (!todo) {
+      return;
     }
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this todo?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    const existingTodos: ITodo[] = JSON.parse(
+      localStorage.getItem("todos") || "[]"
+    );
+
+    const updatedTodos = existingTodos.filter((t) => t.id !== todo.id);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    navigate("/todo/list");
   };
 
   const handleCancel = () => {
@@ -166,7 +170,6 @@ export default function TodoEdit(): JSX.Element {
               </p>
             )}
             <div className="flex justify-between">
-              {" "}
               <div>
                 <button
                   onClick={handleCancel}

@@ -62,17 +62,35 @@ export default function TodoList(): JSX.Element {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {Object.entries(columns).map(([status, items]) => (
-          <div key={status} className="border rounded-md p-4 h-full bg-gray-50">
-            <h2 className="text-lg font-bold mb-2">
-              {status
-                .split("_")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
-            </h2>
-            {items.length === 0 ? (
-              <p>No todos found.</p>
-            ) : (
+        {Object.entries(columns).map(([status, items]) => {
+          if (items.length === 0) {
+            return (
+              <div
+                key={status}
+                className="border rounded-md p-4 h-full bg-gray-50"
+              >
+                <h2 className="text-lg font-bold mb-2">
+                  {status
+                    .split("_")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </h2>
+                <p>No todos found.</p>
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={status}
+              className="border rounded-md p-4 h-full bg-gray-50"
+            >
+              <h2 className="text-lg font-bold mb-2">
+                {status
+                  .split("_")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
+              </h2>
               <ul>
                 {items.map((todo) => (
                   <li key={todo.id}>
@@ -97,9 +115,9 @@ export default function TodoList(): JSX.Element {
                   </li>
                 ))}
               </ul>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
