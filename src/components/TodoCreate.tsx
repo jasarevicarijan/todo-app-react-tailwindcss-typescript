@@ -80,9 +80,14 @@ export default function TodoCreate(): JSX.Element {
             Description must be between 10 and 255 characters.
           </p>
         )}
+
         <div className="flex justify-end">
           {" "}
-          {/* Use flex and justify-end */}
+          <a href="javascript:history.go(-1)">
+            <button className="bg-gray-100 mr-2 px-4 py-2 rounded-md transition duration-300 hover:bg-gray-200 hover:shadow-md inline-block">
+              Cancel
+            </button>
+          </a>
           <button
             type="submit"
             disabled={!isDescriptionValid}
