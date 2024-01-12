@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
+import { TodoStatus } from "../enums/status";
+
 
 export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -15,11 +17,11 @@ export default function TodoList(): JSX.Element {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
+      case TodoStatus.Pending:
         return "bg-red-200";
-      case "in_progress":
+      case TodoStatus.InProgress:
         return "bg-yellow-200";
-      case "done":
+      case TodoStatus.Done:
         return "bg-green-200";
       default:
         return "bg-gray-200";
@@ -29,14 +31,14 @@ export default function TodoList(): JSX.Element {
   const columns: { [key: string]: ITodo[] } = {
     pending: todos.filter(
       (todo) =>
-        todo.status === "pending" && todo.description.includes(searchTerm)
+        todo.status === TodoStatus.Pending && todo.description.includes(searchTerm)
     ),
     in_progress: todos.filter(
       (todo) =>
-        todo.status === "in_progress" && todo.description.includes(searchTerm)
+        todo.status === TodoStatus.InProgress && todo.description.includes(searchTerm)
     ),
     done: todos.filter(
-      (todo) => todo.status === "done" && todo.description.includes(searchTerm)
+      (todo) => todo.status === TodoStatus.Done && todo.description.includes(searchTerm)
     ),
   };
 

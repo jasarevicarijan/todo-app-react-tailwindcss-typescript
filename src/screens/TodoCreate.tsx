@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
 import dayjs from "dayjs";
 import "dayjs/locale/hr"; // Import Croatian locale
+import { TodoStatus } from "../enums/status";
 
 export default function TodoCreate(): JSX.Element {
   const [description, setDescription] = useState<string>("");
@@ -37,7 +38,7 @@ export default function TodoCreate(): JSX.Element {
     const newTodo: ITodo = {
       id: new Date().getTime() - Math.floor(Math.random() * 1000),
       description,
-      status: "pending",
+      status: TodoStatus.Pending,
       created_at: dayjs().locale("hr").format("D. MMMM YYYY."),
     };
 

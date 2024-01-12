@@ -1,6 +1,7 @@
+import { TTodoStatus } from "../enums/status";
 export interface ITodo {
   id: number;
   description: string;
-  status: "pending" | "in_progress" | "done";
+  status: TTodoStatus;
   created_at: string;
 }

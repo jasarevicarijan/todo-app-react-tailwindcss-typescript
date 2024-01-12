@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
+import { TTodoStatus, TodoStatus } from "../enums/status";
 
 type TodoEditParams = {
   todo_id: string;
@@ -42,7 +43,7 @@ export default function TodoEdit(): JSX.Element {
     );
   };
 
-  const handleStageChange = (newStatus: string) => {
+  const handleStageChange = (newStatus: TTodoStatus) => {
     if (!todo) {
       return;
     }
@@ -52,10 +53,10 @@ export default function TodoEdit(): JSX.Element {
     );
 
     const isInProgress = existingTodos.some(
-      (t) => t.status === "in_progress" && t.id !== todo.id
+      (t) => t.status === TodoStatus.InProgress && t.id !== todo.id
     );
 
-    if (isInProgress && newStatus === "in_progress") {
+    if (isInProgress && newStatus === TodoStatus.InProgress) {
       alert("There can only be one todo in 'in_progress' at a time.");
       return;
     }
@@ -69,7 +70,7 @@ export default function TodoEdit(): JSX.Element {
       if (prevTodo) {
         return {
           ...prevTodo,
-          status: newStatus as "pending" | "in_progress" | "done",
+          status: newStatus as TTodoStatus,
         };
       }
       return null;
@@ -148,7 +149,7 @@ export default function TodoEdit(): JSX.Element {
   const renderStatusButtons = () => {
     if (!todo) return;
 
-    if (todo.status === "pending") {
+    if (todo.status === TodoStatus.Pending) {
       return (
         <>
           <button
@@ -159,7 +160,7 @@ export default function TodoEdit(): JSX.Element {
           </button>
         </>
       );
-    } else if (todo.status === "in_progress") {
+    } else if (todo.status === TodoStatus.InProgress) {
       return (
         <button
           onClick={() => handleStageChange("done")}
