@@ -4,9 +4,9 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import TodoList from "./components/TodoList";
-import TodoCreate from "./components/TodoCreate";
-import TodoEdit from "./components/TodoEdit";
+import TodoList from "./screens/TodoList";
+import TodoCreate from "./screens/TodoCreate";
+import TodoEdit from "./screens/TodoEdit";
 
 import "./App.css";
 
