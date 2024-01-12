@@ -62,30 +62,34 @@ export default function TodoList(): JSX.Element {
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")}
             </h2>
-            <ul>
-              {items.map((todo) => (
-                <li key={todo.id}>
-                  <Link
-                    to={`/todo/edit/${todo.id}`}
-                    className="text-gray-900 hover:no-underline"
-                  >
-                    <div
-                      className={`p-4 rounded-md shadow-md ${getStatusColor(
-                        todo.status
-                      )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
+            {items.length === 0 ? (
+              <p>No todos found.</p>
+            ) : (
+              <ul>
+                {items.map((todo) => (
+                  <li key={todo.id}>
+                    <Link
+                      to={`/todo/edit/${todo.id}`}
+                      className="text-gray-900 hover:no-underline"
                     >
-                      <p className="text-lg font-semibold text-left break-all">
-                        {todo.description}
-                      </p>
-                      <div className="flex justify-between">
-                        <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
-                        <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
+                      <div
+                        className={`p-4 rounded-md shadow-md ${getStatusColor(
+                          todo.status
+                        )} mb-4 transition duration-300 ease-in-out hover:bg-blue-100`}
+                      >
+                        <p className="text-lg font-semibold text-left break-all">
+                          {todo.description}
+                        </p>
+                        <div className="flex justify-between">
+                          <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
+                          <p className="text-sm mt-2">{`Created at: ${todo.created_at}`}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         ))}
       </div>
