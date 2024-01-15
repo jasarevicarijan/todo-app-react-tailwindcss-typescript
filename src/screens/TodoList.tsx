@@ -1,8 +1,7 @@
-// TodoList.tsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ITodo } from "../types/todo";
-import { TodoStatus } from "../enums/status";
+import { TTodoStatus, TodoStatus } from "../enums/status";
 import TodoFilter from "../components/TodoFilter";
 import { useDebounce } from "../hooks/useDebounce";
 import ItemColumn from "../components/ItemColumn";
@@ -32,10 +31,14 @@ export default function TodoList(): JSX.Element {
 
   const groupTodosByStatus = (todos: ITodo[]): ITodo[] => {
     const groupedTodos: ITodo[] = [];
-    const statusMap: { [key: string]: ITodo[] } = {};
+    const statusMap: Record<TTodoStatus, ITodo[]> = {
+      [TodoStatus.Pending]: [],
+      [TodoStatus.InProgress]: [],
+      [TodoStatus.Done]: [],
+    };
 
     todos.forEach((todo) => {
-      const status = todo.status;
+      const status = todo.status as TTodoStatus;
       if (!statusMap[status]) {
         statusMap[status] = [];
       }
@@ -43,18 +46,25 @@ export default function TodoList(): JSX.Element {
     });
 
     for (const status in statusMap) {
-      groupedTodos.push(...statusMap[status]);
-    }
+      if (Object.prototype.hasOwnProperty.call(statusMap, status)) {
+        const typedStatus = status as TTodoStatus;
+        groupedTodos.push(...statusMap[typedStatus]);
+      }
+    }    
 
     return groupedTodos;
   };
 
-  const columns: { [key: string]: ITodo[] } = {
-    pending: filteredTodos.filter((todo) => todo.status === TodoStatus.Pending),
-    in_progress: filteredTodos.filter(
+  const columns: Record<TTodoStatus, ITodo[]> = {
+    [TodoStatus.Pending]: filteredTodos.filter(
+      (todo) => todo.status === TodoStatus.Pending
+    ),
+    [TodoStatus.InProgress]: filteredTodos.filter(
       (todo) => todo.status === TodoStatus.InProgress
     ),
-    done: filteredTodos.filter((todo) => todo.status === TodoStatus.Done),
+    [TodoStatus.Done]: filteredTodos.filter(
+      (todo) => todo.status === TodoStatus.Done
+    ),
   };
 
   return (
