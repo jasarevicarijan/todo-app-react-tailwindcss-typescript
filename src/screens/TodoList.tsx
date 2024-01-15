@@ -2,11 +2,9 @@ import { Link } from "react-router-dom";
 import TodoFilter from "../components/TodoFilter";
 import { useTodoList } from "../hooks/useTodoList";
 import ItemColumn from "../components/ItemColumn";
-//import { useDebounce } from "../hooks/useDebounce";
 
 export default function TodoList(): JSX.Element {
   const { columns, setSearchTerm } = useTodoList();
-  //const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   return (
     <div className="container mx-auto p-4">
