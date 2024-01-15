@@ -30,30 +30,24 @@ export default function TodoList(): JSX.Element {
   }, [todos, debouncedSearchTerm]);
 
   const groupTodosByStatus = (todos: ITodo[]): ITodo[] => {
-    const groupedTodos: ITodo[] = [];
     const statusMap: Record<TTodoStatus, ITodo[]> = {
       [TodoStatus.Pending]: [],
       [TodoStatus.InProgress]: [],
       [TodoStatus.Done]: [],
     };
-
-    todos.forEach((todo) => {
+  
+    // Populate statusMap using reduce
+    todos.reduce((accumulator, todo) => {
       const status = todo.status as TTodoStatus;
-      if (!statusMap[status]) {
-        statusMap[status] = [];
-      }
-      statusMap[status].push(todo);
-    });
-
-    for (const status in statusMap) {
-      if (Object.prototype.hasOwnProperty.call(statusMap, status)) {
-        const typedStatus = status as TTodoStatus;
-        groupedTodos.push(...statusMap[typedStatus]);
-      }
-    }    
-
+      accumulator[status].push(todo);
+      return accumulator;
+    }, statusMap);
+  
+    // Flatten the statusMap into groupedTodos
+    const groupedTodos = Object.values(statusMap).flat();
+  
     return groupedTodos;
-  };
+  };  
 
   const columns: Record<TTodoStatus, ITodo[]> = {
     [TodoStatus.Pending]: filteredTodos.filter(
