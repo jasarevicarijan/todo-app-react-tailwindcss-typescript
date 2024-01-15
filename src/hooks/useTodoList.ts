@@ -3,7 +3,6 @@ import { ITodo } from "../types/todo";
 import { TTodoStatus } from "../enums/status";
 import { useDebounce } from "../hooks/useDebounce";
 
-
 export const useTodoList = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
