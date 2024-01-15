@@ -4,10 +4,13 @@ import { ITodo } from "../types/todo";
 import { TodoStatus } from "../enums/status";
 import TodoItem from "../components/TodoItem";
 import TodoFilter from "../components/TodoFilter";
+import { useDebounce } from "../components/hooks/useDebounce";
 
 export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
     const storedTodos = JSON.parse(
@@ -18,6 +21,13 @@ export default function TodoList(): JSX.Element {
     setTodos(groupedTodos);
     setFilteredTodos(groupedTodos);
   }, []);
+
+  useEffect(() => {
+    const filtered = todos.filter((todo) =>
+      todo.description.includes(debouncedSearchTerm)
+    );
+    setFilteredTodos(filtered);
+  }, [todos, debouncedSearchTerm]);
 
   const groupTodosByStatus = (todos: ITodo[]): ITodo[] => {
     const groupedTodos: ITodo[] = [];
@@ -36,11 +46,6 @@ export default function TodoList(): JSX.Element {
     }
 
     return groupedTodos;
-  };
-
-  const handleSearchTermChange = (value: string) => {
-    const filtered = todos.filter((todo) => todo.description.includes(value));
-    setFilteredTodos(filtered);
   };
 
   const columns: { [key: string]: ITodo[] } = {
@@ -62,7 +67,7 @@ export default function TodoList(): JSX.Element {
         </Link>
       </div>
 
-      <TodoFilter onSearchTermChange={handleSearchTermChange} />
+      <TodoFilter onSearchTermChange={setSearchTerm} />
 
       <div className="grid grid-cols-3 gap-4">
         {Object.entries(columns).map(([status, items]) => {
