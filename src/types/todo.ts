@@ -3,5 +3,5 @@ export interface ITodo {
   id: number;
   description: string;
   status: TTodoStatus;
-  created_at: string;
+  created_at: number;
 }

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
-import dayjs from "dayjs";
-import "dayjs/locale/hr"; // Import Croatian locale
 import { TodoStatus } from "../enums/status";
 import TextareaWithValidation from "../components/TextareaWithValidation";
 
@@ -40,7 +38,7 @@ export default function TodoCreate(): JSX.Element {
       id: new Date().getTime() - Math.floor(Math.random() * 1000),
       description,
       status: TodoStatus.Pending,
-      created_at: dayjs().locale("hr").format("D. MMMM YYYY."),
+      created_at: Date.now(),
     };
 
     // Save the new todo to local storage
