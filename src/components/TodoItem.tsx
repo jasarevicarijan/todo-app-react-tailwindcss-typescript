@@ -22,16 +22,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
 
   const formatDate = (timestamp: number) => {
     const options: Intl.DateTimeFormatOptions = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZone: 'Europe/Zagreb',
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "Europe/Zagreb",
     };
 
-    const croatianDateFormat = new Intl.DateTimeFormat('hr-HR', options);
+    const croatianDateFormat = new Intl.DateTimeFormat("hr-HR", options);
     return croatianDateFormat.format(new Date(timestamp));
   };
 
@@ -46,7 +46,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       </p>
       <div className="flex justify-between">
         <p className="text-sm mt-2">{`Status: ${todo.status}`}</p>
-        <p className="text-sm mt-2">{`Created at: ${formatDate(todo.created_at)}`}</p>
+        <p className="text-sm mt-2">{`Created at: ${formatDate(
+          todo.created_at
+        )}`}</p>
       </div>
     </div>
   );

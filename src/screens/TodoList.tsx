@@ -35,19 +35,19 @@ export default function TodoList(): JSX.Element {
       [TodoStatus.InProgress]: [],
       [TodoStatus.Done]: [],
     };
-  
+
     // Populate statusMap using reduce
     todos.reduce((accumulator, todo) => {
       const status = todo.status as TTodoStatus;
       accumulator[status].push(todo);
       return accumulator;
     }, statusMap);
-  
+
     // Flatten the statusMap into groupedTodos
     const groupedTodos = Object.values(statusMap).flat();
-  
+
     return groupedTodos;
-  };  
+  };
 
   const columns: Record<TTodoStatus, ITodo[]> = {
     [TodoStatus.Pending]: filteredTodos.filter(
