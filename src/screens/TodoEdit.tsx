@@ -152,14 +152,12 @@ export default function TodoEdit(): JSX.Element {
 
     if (todo.status === TodoStatus.Pending) {
       return (
-        <>
-          <button
-            onClick={() => handleStageChange("in_progress")}
-            className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
-          >
-            Move to In Progress
-          </button>
-        </>
+        <button
+          onClick={() => handleStageChange("in_progress")}
+          className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
+        >
+          Move to In Progress
+        </button>
       );
     } else if (todo.status === TodoStatus.InProgress) {
       return (
