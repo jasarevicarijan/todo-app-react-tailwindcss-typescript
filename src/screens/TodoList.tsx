@@ -4,7 +4,7 @@ import { ITodo } from "../types/todo";
 import { TodoStatus } from "../enums/status";
 import TodoItem from "../components/TodoItem";
 import TodoFilter from "../components/TodoFilter";
-import { useDebounce } from "../components/hooks/useDebounce";
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function TodoList(): JSX.Element {
   const [todos, setTodos] = useState<ITodo[]>([]);
