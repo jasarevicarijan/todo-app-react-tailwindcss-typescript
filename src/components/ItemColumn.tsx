@@ -1,15 +1,13 @@
-// ItemColumn.tsx
-import React from "react";
 import { ITodo } from "../types/todo";
 import TodoItem from "./TodoItem";
 import { Link } from "react-router-dom";
 
-type ItemColumnProps = {
+type IProps = {
   title: string;
   itemList: ITodo[];
 };
 
-const ItemColumn: React.FC<ItemColumnProps> = ({ title, itemList }) => {
+const ItemColumn = ({ title, itemList }: IProps) => {
   return (
     <div className="border rounded-md p-4 h-full bg-gray-50">
       <h2 className="text-lg font-bold mb-2">

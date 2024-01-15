@@ -1,6 +1,6 @@
 import React from "react";
 
-type TextareaWithValidationProps = {
+type TTextareaWithValidationProps = {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onBlur: () => void;
@@ -11,7 +11,7 @@ type TextareaWithValidationProps = {
   maxCharacters: number;
 };
 
-const TextareaWithValidation: React.FC<TextareaWithValidationProps> = ({
+const TextareaWithValidation = ({
   value,
   onChange,
   onBlur,
@@ -20,7 +20,7 @@ const TextareaWithValidation: React.FC<TextareaWithValidationProps> = ({
   placeholder,
   minCharacters,
   maxCharacters,
-}) => {
+}: TTextareaWithValidationProps) => {
   return (
     <>
       <textarea

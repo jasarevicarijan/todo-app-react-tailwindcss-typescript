@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-type TodoFilterProps = {
+type TTodoFilterProps = {
   onSearchTermChange: (value: string) => void;
 };
 
-const TodoFilter: React.FC<TodoFilterProps> = ({ onSearchTermChange }) => {
+const TodoFilter = ({ onSearchTermChange }: TTodoFilterProps) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
