@@ -53,8 +53,6 @@ export const useTodoList = () => {
   }, [filteredTodos]);
 
   return {
-    todos,
-    filteredTodos,
     searchTerm,
     setSearchTerm,
     columns: groupTodosByStatus,

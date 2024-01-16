@@ -7,27 +7,36 @@ type TodoEditParams = {
   todo_id: string;
 };
 
-const useTodoEdit = () => {
+const useTodo = () => {
   const { todo_id } = useParams<TodoEditParams>();
   const navigate = useNavigate();
 
   const [todo, setTodo] = useState<ITodo | null>(null);
   const [editableDescription, setEditableDescription] = useState<string>("");
   const [isDescriptionValid, setIsDescriptionValid] = useState<boolean>(true);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   useEffect(() => {
-    const existingTodos: ITodo[] = JSON.parse(
-      localStorage.getItem("todos") || "[]"
-    );
-    const selectedTodo = existingTodos.find((t) => t.id.toString() === todo_id);
+    if (todo_id) {
+      // Editing an existing todo
+      const existingTodos: ITodo[] = JSON.parse(
+        localStorage.getItem("todos") || "[]"
+      );
+      const selectedTodo = existingTodos.find(
+        (t) => t.id.toString() === todo_id
+      );
 
-    if (!selectedTodo) {
-      console.log("No todos found");
-      return;
+      if (!selectedTodo) {
+        console.log("No todos found for id:", todo_id);
+        return;
+      }
+
+      setTodo(selectedTodo);
+      setEditableDescription(selectedTodo.description);
+    } else {
+      // Creating a new todo
+      setIsCreating(true);
     }
-
-    setTodo(selectedTodo);
-    setEditableDescription(selectedTodo.description);
   }, [todo_id]);
 
   const handleEditableDescriptionChange = (
@@ -87,30 +96,44 @@ const useTodoEdit = () => {
       return;
     }
 
-    if (!todo) {
-      return;
-    }
-
     const existingTodos: ITodo[] = JSON.parse(
       localStorage.getItem("todos") || "[]"
     );
 
-    const updatedTodos = existingTodos.map((t) =>
-      t.id === todo.id ? { ...t, description: editableDescription } : t
-    );
+    if (isCreating) {
+      // Creating a new todo
+      const newTodo: ITodo = {
+        id: new Date().getTime(),
+        description: editableDescription,
+        status: TodoStatus.Pending,
+        created_at: Date.now(),
+      };
 
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-    setTodo((prevTodo: ITodo | null) => {
-      if (prevTodo) {
-        return {
-          ...prevTodo,
-          description: editableDescription,
-        };
+      const updatedTodos = [...existingTodos, newTodo];
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      navigate("/todo/list");
+    } else {
+      // Editing an existing todo
+      if(!todo){
+        return;
       }
-      return null;
-    });
+      const updatedTodos = existingTodos.map((t) =>
+        t.id === todo.id ? { ...t, description: editableDescription } : t
+      );
 
-    navigate("/todo/list");
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      setTodo((prevTodo: ITodo | null) => {
+        if (prevTodo) {
+          return {
+            ...prevTodo,
+            description: editableDescription,
+          };
+        }
+        return null;
+      });
+
+      navigate("/todo/list");
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -174,6 +197,7 @@ const useTodoEdit = () => {
     todo,
     editableDescription,
     isDescriptionValid,
+    isCreating,
     handleEditableDescriptionChange,
     handleDescriptionBlur,
     handleStageChange,
@@ -185,4 +209,4 @@ const useTodoEdit = () => {
   };
 };
 
-export default useTodoEdit;
+export default useTodo;
