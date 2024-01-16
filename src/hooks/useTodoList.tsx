@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react";
 import { ITodo } from "../types/todo";
 import { TTodoStatus } from "../enums/status";
-import { useDebounce } from "../hooks/useDebounce";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return (...args: unknown[]) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
 
 export const useTodoList = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const search = debounce((term: string) => {
+    const filtered = todos.filter((todo) =>
+      todo.description.includes(term)
+    );
+    setFilteredTodos(filtered);
+  }, 250);
 
   useEffect(() => {
     const storedTodos = JSON.parse(
@@ -18,11 +36,8 @@ export const useTodoList = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = todos.filter((todo) =>
-      todo.description.includes(debouncedSearchTerm)
-    );
-    setFilteredTodos(filtered);
-  }, [todos, searchTerm, debouncedSearchTerm]);
+    search(searchTerm);
+  }, [searchTerm, todos]);
 
   const groupTodosByStatus = (todos: ITodo[]): Record<TTodoStatus, ITodo[]> => {
     const statusMap: Record<TTodoStatus, ITodo[]> = {
