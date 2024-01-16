@@ -165,30 +165,6 @@ const useTodo = () => {
     navigate("/todo/list");
   };
 
-  const renderStatusButtons = () => {
-    if (!todo) return;
-
-    if (todo.status === TodoStatus.Pending) {
-      return (
-        <button
-          onClick={() => handleStageChange("in_progress")}
-          className="bg-yellow-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-yellow-600 hover:shadow-md mr-2 inline-block"
-        >
-          Move to In Progress
-        </button>
-      );
-    } else if (todo.status === TodoStatus.InProgress) {
-      return (
-        <button
-          onClick={() => handleStageChange("done")}
-          className="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-green-600 hover:shadow-md mr-2 inline-block"
-        >
-          Mark as Done
-        </button>
-      );
-    }
-  };
-
   return {
     todo,
     editableDescription,
@@ -196,10 +172,10 @@ const useTodo = () => {
     isCreating,
     handleEditableDescriptionChange,
     handleDescriptionBlur,
+    handleStageChange,
     handleSaveChanges,
     handleKeyDown,
     handleDeleteTodo,
-    renderStatusButtons,
   };
 };
 
