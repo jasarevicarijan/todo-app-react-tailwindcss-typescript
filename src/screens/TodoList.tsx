@@ -20,9 +20,9 @@ export default function TodoList(): JSX.Element {
       <TodoFilter onSearchTermChange={setSearchTerm} />
 
       <div className="grid grid-cols-3 gap-4">
-        {Object.entries(columns).map(([status, items]) => (
-          <ItemColumn key={status} title={status} itemList={items} />
-        ))}
+        <ItemColumn title="Pending" itemList={columns.pending} />
+        <ItemColumn title="In progress" itemList={columns.in_progress} />
+        <ItemColumn title="Done" itemList={columns.done} />
       </div>
     </div>
   );
