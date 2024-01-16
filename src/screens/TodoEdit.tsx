@@ -12,9 +12,12 @@ export default function TodoEdit(): JSX.Element {
     handleSaveChanges,
     handleKeyDown,
     handleDeleteTodo,
-    handleCancel,
     renderStatusButtons,
   } = useTodo();
+
+  const handleCancel = () => {
+    window.history.back();
+  };
 
   return (
     <div className="container flex flex-col mx-4 p-4">

@@ -165,10 +165,6 @@ const useTodo = () => {
     navigate("/todo/list");
   };
 
-  const handleCancel = () => {
-    window.history.back();
-  };
-
   const renderStatusButtons = () => {
     if (!todo) return;
 
@@ -203,7 +199,6 @@ const useTodo = () => {
     handleSaveChanges,
     handleKeyDown,
     handleDeleteTodo,
-    handleCancel,
     renderStatusButtons,
   };
 };
