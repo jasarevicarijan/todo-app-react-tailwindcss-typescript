@@ -3,7 +3,6 @@ import useTodo from "../hooks/useTodo";
 
 const TodoCreate = (): JSX.Element => {
   const {
-    isCreating,
     editableDescription,
     isDescriptionValid,
     handleEditableDescriptionChange,
@@ -44,7 +43,7 @@ const TodoCreate = (): JSX.Element => {
               !isDescriptionValid && "opacity-50 cursor-not-allowed"
             }`}
           >
-            {isCreating ? "Create Todo" : "Save Todo"}
+            Save Todo
           </button>
         </div>
       </form>

@@ -114,7 +114,7 @@ const useTodo = () => {
       navigate("/todo/list");
     } else {
       // Editing an existing todo
-      if(!todo){
+      if (!todo) {
         return;
       }
       const updatedTodos = existingTodos.map((t) =>
@@ -200,7 +200,6 @@ const useTodo = () => {
     isCreating,
     handleEditableDescriptionChange,
     handleDescriptionBlur,
-    handleStageChange,
     handleSaveChanges,
     handleKeyDown,
     handleDeleteTodo,

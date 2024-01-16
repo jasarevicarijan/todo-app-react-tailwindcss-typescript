@@ -21,9 +21,7 @@ export const useTodoList = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const search = debounce((term: string) => {
-    const filtered = todos.filter((todo) =>
-      todo.description.includes(term)
-    );
+    const filtered = todos.filter((todo) => todo.description.includes(term));
     setFilteredTodos(filtered);
   }, 250);
 
