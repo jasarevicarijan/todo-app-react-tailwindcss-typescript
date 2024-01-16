@@ -32,12 +32,11 @@ export const useTodoList = () => {
       localStorage.getItem("todos") || "[]"
     ) as ITodo[];
     setTodos(storedTodos);
-    setFilteredTodos(storedTodos);
   }, []);
 
   useEffect(() => {
     search(searchTerm);
-  }, [searchTerm, todos]);
+  }, [search, searchTerm, todos]);
 
   const groupTodosByStatus = (todos: ITodo[]): Record<TTodoStatus, ITodo[]> => {
     const statusMap: Record<TTodoStatus, ITodo[]> = {

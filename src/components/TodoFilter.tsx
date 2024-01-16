@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import { useTodoList } from "../hooks/useTodoList";
 
 type TTodoFilterProps = {
   onSearchTermChange: (value: string) => void;
 };
 
 const TodoFilter = ({ onSearchTermChange }: TTodoFilterProps) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const { searchTerm, setSearchTerm } = useTodoList();
+
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
